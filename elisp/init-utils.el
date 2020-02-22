@@ -174,8 +174,8 @@ Return a new buffer or BUF with the code in it."
   :config
   (which-key-mode))
 
-(use-package all-the-icons
-  :load-path "~/.emacs.d/site-lisp/all-the-icons")
+;;(use-package all-the-icons
+;;  :load-path "~/.emacs.d/site-lisp/all-the-icons")
 
 ;;google translate
 (use-package google-translate
@@ -278,49 +278,7 @@ Return a new buffer or BUF with the code in it."
 (add-hook 'kill-emacs-hook #'chunyang-scratch-save)
 (add-hook 'after-init-hook #'chunyang-scratch-restore)
 
-;; 统一局域网下上传文件
-(require 'web-server)
-(ws-start
- '(((:GET . ".*") .
-    (lambda (request)
-      (with-slots (process headers) request
-        (ws-response-header proc 200 '("Content-type" . "text/html"))
-        (process-send-string
-         process
-         "\
-<meta name='viewport' content='width=device-width, initial-scale=1'>
-<h1>Upload File</h1>
-<form method='post' enctype='multipart/form-data'>
-  <input type='file' name='file'>
-  <input type='submit'>
-</form>
-"))))
-   ((:POST . ".*") .
-    (lambda (request)
-      (with-slots (process headers) request
-        (let-alist (assoc-default "file" headers)
-          (let ((out (make-temp-file "x-" nil .filename)))
-            (let ((coding-system-for-write 'binary))
-              (write-region .content nil out))
-            (message "[%s] saved %d bytes to %s"
-                     (current-time-string)
-                     (string-bytes .content)
-                     out)
-            (ws-response-header process 200 '("Content-type" . "text/plain"))
-            (process-send-string process (format "saved to %s\n" out))))))))
- 9008 nil :host "0.0.0.0")
-
 ;;-----------------------------
-(add-hook 'focus-in-hook 'my/mac-switch-input-source)
-(defun my/mac-switch-input-source ()
-  (interactive)
-  (shell-command
-   "osascript -e 'tell application \"System Events\" to tell process \"SystemUIServer\"
-      set currentLayout to get the value of the first menu bar item of menu bar 1 whose description is \"text input\"
-      if currentLayout is not \"ABC\" then
-        tell (1st menu bar item of menu bar 1 whose description is \"text input\") to {click, click (menu 1'\"'\"'s menu item \"ABC\")}
-      end if
-    end tell' &>/dev/null"))
 
 (provide 'init-utils)
 

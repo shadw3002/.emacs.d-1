@@ -656,45 +656,4 @@ end tell")
 		"\\|^#\\+[[:alnum:]_]+:.*$" ;; org-mode metadata
 		"\\)")))
 
-(use-package org-wiki
-  :ensure t
-  :init
-  (setq org-wiki-location "~/iCloud/wiki")
-  (setq org-wiki-default-read-only nil)
-  (setq org-wiki-server-port "8000")
-  (setq org-wiki-server-host "127.0.0.1")
-  (setq org-wiki-template
-	(string-trim
-	 "
-#+TITLE: %n
-#+DATE: %d
-#+STARTUP: showall
-#+OPTIONS: toc:nil H:2 num:0
-
-#+BEGIN_CENTER
-[[wiki:index][Home Page]] / Parent 
-#+END_CENTER
-
-"))
-  :config
-  (defalias 'w-h #'org-wiki-helm)
-  (defalias 'w-s #'org-wiki-switch)
-  (defalias 'w-hf  #'org-wiki-helm-frame)
-  (defalias 'w-hr #'org-wiki-helm-read-only)
-  (defalias 'w-i #'org-wiki-index)
-  (defalias 'w-n #'org-wiki-new)
-  (defalias 'w-in #'org-wiki-insert-new)
-  (defalias 'w-il #'org-wiki-insert-link)
-  (defalias 'w-ad #'org-wiki-asset-dired)
-  (defalias 'og2h #'org-html-export-to-html)
-  (defalias 'w-close #'org-wiki-close)
-  ;; (let ((url "https://raw.githubusercontent.com/caiorss/org-wiki/master/org-wiki.el"))     
-  ;;   (with-current-buffer (url-retrieve-synchronously url)
-  ;;     (goto-char (point-min))
-  ;;     (re-search-forward "^$")
-  ;;     (delete-region (point) (point-min))
-  ;;     (kill-whole-line)
-  ;;     (package-install-from-buffer)))
-  )
-
 (provide 'init-org)
